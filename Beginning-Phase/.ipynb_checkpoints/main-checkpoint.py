@@ -29,4 +29,9 @@ newHeight = int(scale_factor * heigth)
 data = TransformImagesToData(MODE,amountLimiter,emnist_images,emnist_labels,False)
 showImages(MODE,amountLimiter,emnist_images,emnist_labels,newWidth,newHeight,data)
 
+
+
+
+
+
 cv.destroyAllWindows()
