@@ -7,7 +7,7 @@ def from2Dto1DHorizontal(mat):
     res = []
     for row in range(rows):
         for col in range(cols):
-            res.append(mat[row][col])
+            res.append(mat[row][col]/255)
 
     return np.array(res)
 
@@ -16,7 +16,7 @@ def from2Dto1DVertical(mat):
     res = []
     for col in range(cols):
         for row in range(rows):
-            res.append(mat[row][col])
+            res.append(mat[row][col]/255)
 
     return np.array(res)
 
@@ -29,7 +29,7 @@ def listArrayToString(narray):
     return res
 
 
-def TransformImagesToData(MODE, amountLimiter, emnist_images, emnist_labels,horizontal):
+def TransformImagesToData(MODE, amountLimiter, emnist_images, emnist_labels,horizontal,writeToFile):
     """Transforms 2D images into 1D, writes them into text files and returns list of such arrays"""
     path = ""
     resList = []
@@ -57,9 +57,10 @@ def TransformImagesToData(MODE, amountLimiter, emnist_images, emnist_labels,hori
                 newMat = from2Dto1DVertical(im)
             resList.append(newMat)
 
-            newMatTxt = listArrayToString(newMat)
-            res = imLabel + "-" + newMatTxt + '\n'
-            file.write(res)
+            if writeToFile:
+                newMatTxt = listArrayToString(newMat)
+                res = imLabel + "-" + newMatTxt + '\n'
+                file.write(res)
     return resList
 
 

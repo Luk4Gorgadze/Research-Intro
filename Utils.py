@@ -7,7 +7,8 @@ def from2Dto1DHorizontal(mat):
     res = []
     for row in range(rows):
         for col in range(cols):
-            res.append(mat[row][col])
+            # Scale values to 0-1
+            res.append(mat[row][col]/255)
 
     return np.array(res)
 
@@ -16,7 +17,8 @@ def from2Dto1DVertical(mat):
     res = []
     for col in range(cols):
         for row in range(rows):
-            res.append(mat[row][col])
+            # Scale values to 0-1
+            res.append(mat[row][col]/255)
 
     return np.array(res)
 
@@ -59,7 +61,7 @@ def TransformImagesToData(MODE, amountLimiter, emnist_images, emnist_labels,hori
 
             newMatTxt = listArrayToString(newMat)
             res = imLabel + "-" + newMatTxt + '\n'
-            file.write(res)
+            # file.write(res)
     return resList
 
 

@@ -1,40 +1,22 @@
-SymbolMapping = {
-    '.' : ',',
-    ',' : '.',
-    '!' : '?',
-    '?' : '!',
-    '0' : '1',
-    '1' : '0',
-    '2' : '3',
-    '3' : '2',
-    '4' : '5',
-    '5' : '4',
-    '6' : '7',
-    '7' : '6',
-    '8' : '9',
-    '9' : '8'
-}
-def encryptCaesarCipher(shift,text):
-    lst = []
-    for letter in text:
-        if letter not in SymbolMapping and not letter.isalpha():
-            print("1")
-            lst.append(letter)
-        elif letter in SymbolMapping:
-            print("2")
-            lst.append(SymbolMapping[letter])
-        else:
-            print(ord(letter))
-            index = 0
-            if ord(letter) <= ord("a"):
-                index = ord("A") + (ord(letter) - ord("A") + shift) % 26
-            if ord(letter) >= ord("a"):
-                print("Here")
-                index = ord("a") + (ord(letter) - ord("a") + shift) % 26
-            lst.append(chr(index))   
-    return ''.join(lst)
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+import numpy as np
 
-print(encryptCaesarCipher(27,"AZZZZZW"))
+# Generate sample data
+n = 10
+x, y = np.meshgrid(np.arange(n), np.arange(n))
+z = np.random.rand(n, n)
+print(z)
 
-s = set()
-s.ad
+# Create a 3D plot
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.plot_surface(x, y, z)
+
+# Set the labels of the axes
+ax.set_xlabel('X Label')
+ax.set_ylabel('Y Label')
+ax.set_zlabel('Z Label')
+
+# Show the plot
+plt.show()
