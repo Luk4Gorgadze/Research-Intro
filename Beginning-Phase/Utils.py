@@ -1,3 +1,4 @@
+from scipy.linalg import solve
 import numpy as np
 import cv2 as cv
 import matplotlib.pyplot as plt
@@ -101,3 +102,71 @@ def plotGraphs(arrData):
     # Show the plot
     plt.show()
    
+def contEquation(data,imageIndex,smooth):
+    Us = [data[imageIndex]]
+    # # Create tridiagonal matrix 
+    dataLength = len(data[0])
+    A = np.zeros((dataLength,dataLength))
+    dt = 0.001
+    h = 1
+    s = dt/h
+    A[0][0] = 1
+    A[dataLength - 1][dataLength - 1] = 1
+    y = np.zeros(dataLength)
+    epsilon = 1e-5
+    times = [i * dt for i in range(100)]
+    # print(A[0])
+
+    for t in range(1,len(times)-1):
+        for i in range(1,dataLength-1):
+            tt = times[t]
+            tp = times[t+1]
+            tm = times[t-1]
+
+            v = smooth(tt,i)
+
+            vjp1 = smooth(tt,i+1)
+            vjm1 = smooth(tt,i-1)
+
+            # V_j_p = 1/2 * (v + abs(v))
+            # V_j_m = 1/2 * (v - abs(v))
+            # V_jp1m = 1/2 * (vjp1 - abs(vjp1))
+            # V_jm1p = 1/2 * (vjm1 + abs(vjm1))
+
+            V_j_p = 1/2 * (v + (v**2 + epsilon**2)**(1/2))
+            V_j_m = 1/2 * (v - (v**2 - epsilon**2)**(1/2))
+            V_jp1m = 1/2 * (vjp1 - (vjp1**2 - epsilon**2)**(1/2))
+            V_jm1p = 1/2 * (vjm1 + (vjm1**2 + epsilon**2)**(1/2))
+
+
+            c = s*V_jm1p
+            b = s*V_jp1m
+            a = 1 + s*V_j_p - s*V_j_m
+            # print(b)
+            A[i][i-1] = -c
+            A[i][i] = a
+            A[i][i+1] = b
+
+        for j in range(dataLength):
+            y[j] = Us[t-1][j]
+        # print(A[0])
+        c = solve(A,y)
+        Us.append(c)
+    return np.array(Us)
+
+def plotData(data):
+    x, y = np.meshgrid(np.arange(data.shape[1]), np.arange(data.shape[0]))
+    z = data.flatten()
+    
+    fig = plt.figure()
+    ax = fig.add_subplot(projection='3d')
+    # ax.scatter(x, y, z)
+    ax.plot_surface(x, y, data)
+
+    # Label axes
+    ax.set_xlabel('Column Index')
+    ax.set_ylabel('Row Index')
+    ax.set_zlabel('Value')
+
+    # Show plot
+    plt.show()

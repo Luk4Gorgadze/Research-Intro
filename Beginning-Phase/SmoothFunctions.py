@@ -1,2 +1,2 @@
 def smooth(t, x):
-    return 5*t + x**2
+    return 10*x + 2*t**2 + 1
