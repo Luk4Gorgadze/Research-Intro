@@ -107,20 +107,17 @@ def contEquation(data,imageIndex,smooth):
     # # Create tridiagonal matrix 
     dataLength = len(data[0])
     A = np.zeros((dataLength,dataLength))
-    dt = 0.01
+    dt = 0.1
     h = 1
     s = dt/h
     A[0][0] = 1
     A[dataLength - 1][dataLength - 1] = 1
     y = np.zeros(dataLength)
-    epsilon = 1e-5
-    times = [i * dt for i in range(100)]
+    epsilon = 1e-2
+    times = [i * dt for i in range(40)]
     for t in range(1,len(times)-1):
         for i in range(1,dataLength-1):
             tt = times[t]
-            tp = times[t+1]
-            tm = times[t-1]
-
             v = smooth(tt,i)
 
             vjp1 = smooth(tt,i+1)
@@ -144,12 +141,14 @@ def contEquation(data,imageIndex,smooth):
             A[i][i-1] = -c
             A[i][i] = a
             A[i][i+1] = b
+            # print(-c,a,b)
         y[0] = 0
         y[dataLength-1] = 0
         for j in range(1,dataLength-1):
             y[j] = Us[t-1][j]
         # print(A[0])
         c = solve(A,y)
+        # c = np.linalg.solve(A,y)
         Us.append(c)
     return np.array(Us)
 
@@ -159,8 +158,9 @@ def plotData(data):
     
     fig = plt.figure()
     ax = fig.add_subplot(projection='3d')
-    # ax.scatter(x, y, z)
-    ax.plot_surface(x, y, data)
+    ax.scatter(x, y, z,s=.5)
+    # ax.plot(x, y, z)
+    # ax.plot_surface(x, y, data)
 
     # Label axes
     ax.set_xlabel('Column Index')
@@ -169,3 +169,4 @@ def plotData(data):
 
     # Show plot
     plt.show()
+    

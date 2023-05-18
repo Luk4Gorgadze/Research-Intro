@@ -34,7 +34,7 @@ width, heigth = emnist_images[0].shape
 
 # # For scaling up the image
 scale_factor = 20
-amountLimiter = 200
+amountLimiter = 500
 
 newWidth = int(scale_factor * width)
 newHeight = int(scale_factor * heigth)
@@ -47,7 +47,7 @@ data = np.array(data)
 # # I need to solve continuity equation for each such image
 
 
-Us = contEquation(data,100,smooth)
+Us = contEquation(data,50,smooth)
 plotData(Us)
 
 
