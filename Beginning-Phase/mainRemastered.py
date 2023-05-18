@@ -47,7 +47,7 @@ data = np.array(data)
 # # I need to solve continuity equation for each such image
 
 
-Us = contEquation(data,150,smooth)
+Us = contEquation(data,100,smooth)
 plotData(Us)
 
 

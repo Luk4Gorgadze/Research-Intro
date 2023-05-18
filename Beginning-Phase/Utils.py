@@ -107,7 +107,7 @@ def contEquation(data,imageIndex,smooth):
     # # Create tridiagonal matrix 
     dataLength = len(data[0])
     A = np.zeros((dataLength,dataLength))
-    dt = 0.001
+    dt = 0.01
     h = 1
     s = dt/h
     A[0][0] = 1
@@ -115,8 +115,6 @@ def contEquation(data,imageIndex,smooth):
     y = np.zeros(dataLength)
     epsilon = 1e-5
     times = [i * dt for i in range(100)]
-    # print(A[0])
-
     for t in range(1,len(times)-1):
         for i in range(1,dataLength-1):
             tt = times[t]
@@ -146,8 +144,9 @@ def contEquation(data,imageIndex,smooth):
             A[i][i-1] = -c
             A[i][i] = a
             A[i][i+1] = b
-
-        for j in range(dataLength):
+        y[0] = 0
+        y[dataLength-1] = 0
+        for j in range(1,dataLength-1):
             y[j] = Us[t-1][j]
         # print(A[0])
         c = solve(A,y)
